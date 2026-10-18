@@ -86,7 +86,7 @@ class _SplashScreenState extends State<SplashScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Image.asset(
-                  'lib/assets/icon_edukardex.png',
+                  'assets/icon_edukardex.png',
                   width: 250, // Ajusta el tamaño según sea necesario
                   fit: BoxFit.contain,
                 ),

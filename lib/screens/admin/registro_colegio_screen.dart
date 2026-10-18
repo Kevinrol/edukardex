@@ -100,8 +100,8 @@ class _RegistroColegioScreenState extends State<RegistroColegioScreen> {
                     child: Padding(
                       padding: const EdgeInsets.only(top: 4),
                       child: Image.asset(
-                        'lib/assets/logo_edukardex.png',
-                        height: 90,
+                        'assets/logo_horizontal.png',
+                        height: 50,
                         fit: BoxFit.contain,
                       ),
                     ),

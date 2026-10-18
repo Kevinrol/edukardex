@@ -100,8 +100,8 @@ class _RegistroDocenteScreenState extends State<RegistroDocenteScreen> {
                     child: Padding(
                       padding: const EdgeInsets.only(top: 4),
                       child: Image.asset(
-                        'lib/assets/icon_edukardex.png',
-                        height: 56,
+                        'assets/logo_horizontal.png',
+                        height: 50,
                         fit: BoxFit.contain,
                       ),
                     ),

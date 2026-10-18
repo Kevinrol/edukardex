@@ -106,9 +106,9 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
           Row(
             children: [
               Image.asset(
-                'lib/assets/logo_edukardex.png',
-                height: 110,
-                color: Colors.white,
+                'assets/logo_horizontal.png',
+                height: 48,
+                fit: BoxFit.contain,
               ),
               const Spacer(),
               Container(
