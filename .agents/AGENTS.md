@@ -3,8 +3,10 @@
 ## 📋 Regla: Registro obligatorio de cambios en la base de datos
 
 **Cualquier cambio aplicado a la base de datos de Supabase DEBE registrarse en el archivo
-[`edukardex_schema.sql`](file:///c:/Users/dante/Documents/edukardex_registro_mvp/edukardex_schema.sql)**
+[`edukardex_schema.sql`](../edukardex_schema.sql)**
 dentro de la sección `CHANGELOG` al final del archivo.
+
+> Guía funcional del producto y alcance actual: [`GUIA_APLICACION.md`](GUIA_APLICACION.md).
 
 ### Formato obligatorio del registro
 
