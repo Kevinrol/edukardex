@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'admin/admin_home_screen.dart';
+import '../services/auth_service.dart';
+import 'login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -13,14 +14,28 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    // Navegar a la pantalla principal después de 3 segundos
-    Future.delayed(const Duration(seconds: 3), () {
-      if (mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const AdminHomeScreen()),
-        );
-      }
-    });
+    _decidirDestino();
+  }
+
+  Future<void> _decidirDestino() async {
+    // Mantiene el splash visible al menos 3 segundos
+    final espera = Future.delayed(const Duration(seconds: 3));
+    PerfilUsuario? perfil;
+    try {
+      perfil = await AuthService().obtenerPerfil();
+    } catch (_) {
+      perfil = null;
+    }
+    await espera;
+    if (!mounted) return;
+
+    if (perfil == null) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const LoginScreen()),
+      );
+    } else {
+      irSegunRol(context, perfil);
+    }
   }
 
   @override
@@ -51,7 +66,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ),
           ),
-          
+
           // Figura azul (Bottom Center)
           Positioned(
             bottom: -150,

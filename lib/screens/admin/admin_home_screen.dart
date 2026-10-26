@@ -1,3 +1,5 @@
+import '../../services/auth_service.dart';
+import '../login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../models/colegio.dart';
@@ -5,6 +7,7 @@ import '../../services/colegio_service.dart';
 import '../../theme/app_theme.dart';
 import 'registro_colegio_screen.dart';
 import 'colegio_detail_screen.dart';
+
 
 class AdminHomeScreen extends StatefulWidget {
   const AdminHomeScreen({super.key});
@@ -52,6 +55,15 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
       MaterialPageRoute(builder: (_) => const RegistroColegioScreen()),
     );
     _cargar();
+  }
+
+  Future<void> _cerrarSesion() async {
+    await AuthService().cerrarSesion();
+    if (!mounted) return;
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => const LoginScreen()),
+      (_) => false,
+    );
   }
 
   @override
@@ -126,6 +138,12 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                     letterSpacing: 1.2,
                   ),
                 ),
+              ),
+              const SizedBox(width: 8),
+              IconButton(
+                tooltip: 'Cerrar sesión',
+                icon: const Icon(Icons.logout_rounded, color: Colors.white),
+                onPressed: _cerrarSesion,
               ),
             ],
           ),
