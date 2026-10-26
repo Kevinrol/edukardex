@@ -29,4 +29,16 @@ class DocenteService {
   Future<void> eliminar(String id) async {
     await _client.from('docentes').delete().eq('id', id);
   }
+
+  Future<List<Docente>> listarPorColegio(String colegioId) async {
+    final response = await _client
+        .from('docentes')
+        .select()
+        .eq('colegio_id', colegioId)
+        .order('created_at', ascending: false);
+
+    return (response as List<dynamic>)
+        .map((e) => Docente.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
 }

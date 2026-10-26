@@ -6,7 +6,8 @@ import '../../theme/app_theme.dart';
 import 'registro_estudiante_screen.dart';
 
 class ListaEstudiantesScreen extends StatefulWidget {
-  const ListaEstudiantesScreen({super.key});
+  final String colegioId;
+  const ListaEstudiantesScreen({super.key, required this.colegioId});
 
   @override
   State<ListaEstudiantesScreen> createState() => _ListaEstudiantesScreenState();
@@ -27,7 +28,7 @@ class _ListaEstudiantesScreenState extends State<ListaEstudiantesScreen> {
 
   Future<void> _cargar() async {
     setState(() => _cargando = true);
-    final estudiantes = await _service.listar();
+    final estudiantes = await _service.listarPorColegio(widget.colegioId);
     estudiantes.sort((a, b) => b.createdAt.compareTo(a.createdAt));
     setState(() {
       _todos = estudiantes;
@@ -78,7 +79,7 @@ class _ListaEstudiantesScreenState extends State<ListaEstudiantesScreen> {
         onPressed: () async {
           await Navigator.push(
             context,
-            MaterialPageRoute(builder: (_) => const RegistroEstudianteScreen()),
+            MaterialPageRoute(builder: (_) => RegistroEstudianteScreen(colegioId: widget.colegioId)),
           );
           _cargar();
         },

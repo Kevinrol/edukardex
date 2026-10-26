@@ -32,4 +32,16 @@ class EstudianteService {
     
     return (response as List).isNotEmpty;
   }
+
+    Future<List<Estudiante>> listarPorColegio(String colegioId) async {
+    final response = await _client
+        .from('estudiantes')
+        .select()
+        .eq('colegio_id', colegioId)
+        .order('created_at', ascending: false);
+
+    return (response as List<dynamic>)
+        .map((e) => Estudiante.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
 }

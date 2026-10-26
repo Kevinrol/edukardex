@@ -6,7 +6,8 @@ import '../../services/estudiante_service.dart';
 import '../../theme/app_theme.dart';
 
 class RegistroEstudianteScreen extends StatefulWidget {
-  const RegistroEstudianteScreen({super.key});
+  final String colegioId;
+  const RegistroEstudianteScreen({super.key, required this.colegioId});
 
   @override
   State<RegistroEstudianteScreen> createState() => _RegistroEstudianteScreenState();
@@ -78,12 +79,12 @@ class _RegistroEstudianteScreenState extends State<RegistroEstudianteScreen> {
 
     final estudiante = Estudiante(
       id: const Uuid().v4(),
-      colegioId: '00000000-0000-0000-0000-000000000000',
+      colegioId: widget.colegioId,
       nombres: _nombresCtrl.text.trim(),
       apellidoPaterno: _apellidoPaternoCtrl.text.trim(),
       apellidoMaterno: _apellidoMaternoCtrl.text.trim().isEmpty ? null : _apellidoMaternoCtrl.text.trim(),
       ci: _ciCtrl.text.trim(),
-      fechaNacimiento: _fechaNacCtrl.text.trim(),
+      fechaNacimiento: _fechaNacCtrl.text.trim().isEmpty ? null : _fechaNacCtrl.text.trim(),
       createdAt: DateTime.now(),
     );
 
