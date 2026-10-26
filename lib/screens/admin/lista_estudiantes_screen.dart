@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'responsables_estudiante_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../models/estudiante.dart';
 import '../../services/estudiante_service.dart';
@@ -155,9 +156,24 @@ class _ListaEstudiantesScreenState extends State<ListaEstudiantesScreen> {
         ),
         title: Text(e.nombreCompleto, style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
         subtitle: Text('CI: ${e.ci}'),
-        trailing: IconButton(
-          icon: const Icon(Icons.delete_outline, color: AppColors.rojoError),
-          onPressed: () => _eliminar(e),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              tooltip: 'Responsables',
+              icon: const Icon(Icons.family_restroom_rounded, color: AppColors.azulPrimario),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ResponsablesEstudianteScreen(estudiante: e),
+                ),
+              ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.delete_outline, color: AppColors.rojoError),
+              onPressed: () => _eliminar(e),
+            ),
+          ],
         ),
       ),
     );
