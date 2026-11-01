@@ -10,6 +10,7 @@ import 'registro_gestion_screen.dart';
 import 'registro_curso_screen.dart';
 import 'lista_estudiantes_screen.dart';
 import 'lista_docentes_screen.dart';
+import 'curso_detail_screen.dart';
 
 class ColegioDetailScreen extends StatefulWidget {
   final Colegio colegio;
@@ -188,11 +189,12 @@ class _ColegioDetailScreenState extends State<ColegioDetailScreen>
   }
 
   Widget _buildTabGestiones() {
-    if (_cargandoGestiones)
+    if (_cargandoGestiones) {
       return const Center(child: CircularProgressIndicator());
-    if (_gestiones.isEmpty)
+    }
+    if (_gestiones.isEmpty) {
       return _buildEmpty('No hay gestiones', Icons.calendar_today_rounded);
-
+    }
     return RefreshIndicator(
       onRefresh: _cargarGestiones,
       child: ListView.separated(
@@ -249,10 +251,12 @@ class _ColegioDetailScreenState extends State<ColegioDetailScreen>
   }
 
   Widget _buildTabCursos() {
-    if (_cargandoCursos)
+    if (_cargandoCursos) {
       return const Center(child: CircularProgressIndicator());
-    if (_cursos.isEmpty)
+    }
+    if (_cursos.isEmpty) {
       return _buildEmpty('No hay cursos', Icons.class_rounded);
+    }
 
     return RefreshIndicator(
       onRefresh: _cargarCursos,
@@ -269,6 +273,10 @@ class _ColegioDetailScreenState extends State<ColegioDetailScreen>
 
           return Card(
             child: ListTile(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => CursoDetailScreen(curso: c)),
+              ),
               leading: const CircleAvatar(
                 backgroundColor: AppColors.azulClaro,
                 child: Icon(Icons.class_rounded, color: AppColors.azulPrimario),
