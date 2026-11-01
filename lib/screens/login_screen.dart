@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../services/auth_service.dart';
 import '../theme/app_theme.dart';
 import 'admin/admin_home_screen.dart';
+import 'docente/docente_home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -111,6 +112,8 @@ void irSegunRol(BuildContext context, PerfilUsuario perfil) {
   final Widget destino;
   if (perfil.esAdministrador) {
     destino = const AdminHomeScreen();
+  } else if (perfil.rol == 'docente') {
+    destino = DocenteHomeScreen(perfil: perfil);
   } else {
     destino = Scaffold(
       appBar: AppBar(title: Text('Rol: ${perfil.rol}')),
