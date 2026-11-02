@@ -8,6 +8,9 @@ import '../../services/curso_service.dart';
 import '../../theme/app_theme.dart';
 import 'registro_gestion_screen.dart';
 import 'registro_curso_screen.dart';
+import 'lista_estudiantes_screen.dart';
+import 'lista_docentes_screen.dart';
+import 'curso_detail_screen.dart';
 
 class ColegioDetailScreen extends StatefulWidget {
   final Colegio colegio;
@@ -17,11 +20,12 @@ class ColegioDetailScreen extends StatefulWidget {
   State<ColegioDetailScreen> createState() => _ColegioDetailScreenState();
 }
 
-class _ColegioDetailScreenState extends State<ColegioDetailScreen> with SingleTickerProviderStateMixin {
+class _ColegioDetailScreenState extends State<ColegioDetailScreen>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final _gestionService = GestionService();
   final _cursoService = CursoService();
-  
+
   List<GestionAcademica> _gestiones = [];
   List<Curso> _cursos = [];
   bool _cargandoGestiones = true;
@@ -84,6 +88,30 @@ class _ColegioDetailScreenState extends State<ColegioDetailScreen> with SingleTi
       backgroundColor: AppColors.grisFondo,
       appBar: AppBar(
         title: Text(widget.colegio.nombre),
+        actions: [
+          IconButton(
+            tooltip: 'Docentes',
+            icon: const Icon(Icons.menu_book_rounded),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) =>
+                    ListaDocentesScreen(colegioId: widget.colegio.id),
+              ),
+            ),
+          ),
+          IconButton(
+            tooltip: 'Estudiantes',
+            icon: const Icon(Icons.groups_rounded),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) =>
+                    ListaEstudiantesScreen(colegioId: widget.colegio.id),
+              ),
+            ),
+          ),
+        ],
         bottom: TabBar(
           controller: _tabController,
           indicatorColor: Colors.white,
@@ -115,7 +143,8 @@ class _ColegioDetailScreenState extends State<ColegioDetailScreen> with SingleTi
           await Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => RegistroGestionScreen(colegioId: widget.colegio.id),
+              builder: (_) =>
+                  RegistroGestionScreen(colegioId: widget.colegio.id),
             ),
           );
           _cargarGestiones();
@@ -123,7 +152,8 @@ class _ColegioDetailScreenState extends State<ColegioDetailScreen> with SingleTi
         backgroundColor: AppColors.azulPrimario,
         foregroundColor: Colors.white,
         icon: const Icon(Icons.calendar_month_rounded),
-        label: Text('Nueva Gestión', style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
+        label: Text('Nueva Gestión',
+            style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
       );
     } else if (_tabController.index == 1) {
       return FloatingActionButton.extended(
@@ -132,7 +162,8 @@ class _ColegioDetailScreenState extends State<ColegioDetailScreen> with SingleTi
           // Solo permitir si hay gestiones activas
           if (_gestiones.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Debe crear una gestión académica primero')),
+              const SnackBar(
+                  content: Text('Debe crear una gestión académica primero')),
             );
             return;
           }
@@ -150,16 +181,20 @@ class _ColegioDetailScreenState extends State<ColegioDetailScreen> with SingleTi
         backgroundColor: AppColors.azulPrimario,
         foregroundColor: Colors.white,
         icon: const Icon(Icons.class_rounded),
-        label: Text('Nuevo Curso', style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
+        label: Text('Nuevo Curso',
+            style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
       );
     }
     return null;
   }
 
   Widget _buildTabGestiones() {
-    if (_cargandoGestiones) return const Center(child: CircularProgressIndicator());
-    if (_gestiones.isEmpty) return _buildEmpty('No hay gestiones', Icons.calendar_today_rounded);
-
+    if (_cargandoGestiones) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    if (_gestiones.isEmpty) {
+      return _buildEmpty('No hay gestiones', Icons.calendar_today_rounded);
+    }
     return RefreshIndicator(
       onRefresh: _cargarGestiones,
       child: ListView.separated(
@@ -178,10 +213,13 @@ class _ColegioDetailScreenState extends State<ColegioDetailScreen> with SingleTi
                 ),
                 child: Text(
                   g.anio.toString(),
-                  style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: AppColors.azulPrimario),
+                  style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.azulPrimario),
                 ),
               ),
-              title: Text('Gestión ${g.anio}', style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
+              title: Text('Gestión ${g.anio}',
+                  style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
               subtitle: Text(
                 '${g.fechaInicio.toLocal().toString().split(' ')[0]} - ${g.fechaFin.toLocal().toString().split(' ')[0]}',
                 style: GoogleFonts.poppins(fontSize: 12),
@@ -189,7 +227,9 @@ class _ColegioDetailScreenState extends State<ColegioDetailScreen> with SingleTi
               trailing: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: g.activa ? const Color(0xFFDCFCE7) : const Color(0xFFF1F5F9),
+                  color: g.activa
+                      ? const Color(0xFFDCFCE7)
+                      : const Color(0xFFF1F5F9),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
@@ -197,7 +237,9 @@ class _ColegioDetailScreenState extends State<ColegioDetailScreen> with SingleTi
                   style: GoogleFonts.poppins(
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
-                    color: g.activa ? AppColors.verdeOscuro : const Color(0xFF64748B),
+                    color: g.activa
+                        ? AppColors.verdeOscuro
+                        : const Color(0xFF64748B),
                   ),
                 ),
               ),
@@ -209,8 +251,12 @@ class _ColegioDetailScreenState extends State<ColegioDetailScreen> with SingleTi
   }
 
   Widget _buildTabCursos() {
-    if (_cargandoCursos) return const Center(child: CircularProgressIndicator());
-    if (_cursos.isEmpty) return _buildEmpty('No hay cursos', Icons.class_rounded);
+    if (_cargandoCursos) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    if (_cursos.isEmpty) {
+      return _buildEmpty('No hay cursos', Icons.class_rounded);
+    }
 
     return RefreshIndicator(
       onRefresh: _cargarCursos,
@@ -221,17 +267,24 @@ class _ColegioDetailScreenState extends State<ColegioDetailScreen> with SingleTi
         itemBuilder: (context, index) {
           final c = _cursos[index];
           // Buscar año de la gestión
-          final gestion = _gestiones.where((g) => g.id == c.gestionId).firstOrNull;
+          final gestion =
+              _gestiones.where((g) => g.id == c.gestionId).firstOrNull;
           final anio = gestion?.anio.toString() ?? '?';
 
           return Card(
             child: ListTile(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => CursoDetailScreen(curso: c)),
+              ),
               leading: const CircleAvatar(
                 backgroundColor: AppColors.azulClaro,
                 child: Icon(Icons.class_rounded, color: AppColors.azulPrimario),
               ),
-              title: Text('${c.nombre} ${c.paralelo ?? ''}'.trim(), style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
-              subtitle: Text('Nivel: ${c.nivel ?? '-'} | Gestión $anio', style: GoogleFonts.poppins(fontSize: 12)),
+              title: Text('${c.nombre} ${c.paralelo ?? ''}'.trim(),
+                  style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
+              subtitle: Text('Nivel: ${c.nivel ?? '-'} | Gestión $anio',
+                  style: GoogleFonts.poppins(fontSize: 12)),
             ),
           );
         },

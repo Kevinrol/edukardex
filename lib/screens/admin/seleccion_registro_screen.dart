@@ -6,7 +6,8 @@ import 'registro_colegio_screen.dart';
 
 /// Pantalla de selección: ¿Registrarse como Estudiante, Docente o Colegio?
 class SeleccionRegistroScreen extends StatelessWidget {
-  const SeleccionRegistroScreen({super.key});
+  final String colegioId;
+  const SeleccionRegistroScreen({super.key, required this.colegioId});
 
   @override
   Widget build(BuildContext context) {
@@ -175,7 +176,7 @@ class SeleccionRegistroScreen extends StatelessWidget {
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => const RegistroEstudianteScreen(),
+                      builder: (_) => RegistroEstudianteScreen(colegioId: colegioId),
                     ),
                   ),
                 ),

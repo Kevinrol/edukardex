@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'responsables_estudiante_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../models/estudiante.dart';
 import '../../services/estudiante_service.dart';
@@ -6,7 +7,8 @@ import '../../theme/app_theme.dart';
 import 'registro_estudiante_screen.dart';
 
 class ListaEstudiantesScreen extends StatefulWidget {
-  const ListaEstudiantesScreen({super.key});
+  final String colegioId;
+  const ListaEstudiantesScreen({super.key, required this.colegioId});
 
   @override
   State<ListaEstudiantesScreen> createState() => _ListaEstudiantesScreenState();
@@ -27,7 +29,7 @@ class _ListaEstudiantesScreenState extends State<ListaEstudiantesScreen> {
 
   Future<void> _cargar() async {
     setState(() => _cargando = true);
-    final estudiantes = await _service.listar();
+    final estudiantes = await _service.listarPorColegio(widget.colegioId);
     estudiantes.sort((a, b) => b.createdAt.compareTo(a.createdAt));
     setState(() {
       _todos = estudiantes;
@@ -78,7 +80,7 @@ class _ListaEstudiantesScreenState extends State<ListaEstudiantesScreen> {
         onPressed: () async {
           await Navigator.push(
             context,
-            MaterialPageRoute(builder: (_) => const RegistroEstudianteScreen()),
+            MaterialPageRoute(builder: (_) => RegistroEstudianteScreen(colegioId: widget.colegioId)),
           );
           _cargar();
         },
@@ -154,9 +156,24 @@ class _ListaEstudiantesScreenState extends State<ListaEstudiantesScreen> {
         ),
         title: Text(e.nombreCompleto, style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
         subtitle: Text('CI: ${e.ci}'),
-        trailing: IconButton(
-          icon: const Icon(Icons.delete_outline, color: AppColors.rojoError),
-          onPressed: () => _eliminar(e),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              tooltip: 'Responsables',
+              icon: const Icon(Icons.family_restroom_rounded, color: AppColors.azulPrimario),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ResponsablesEstudianteScreen(estudiante: e),
+                ),
+              ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.delete_outline, color: AppColors.rojoError),
+              onPressed: () => _eliminar(e),
+            ),
+          ],
         ),
       ),
     );
